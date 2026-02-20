@@ -167,7 +167,7 @@ function DataDeletion() {
                   This action is <strong>permanent and irreversible</strong>. All your data in the selected app will be permanently deleted.
                 </div>
 
-                <button type="submit" className="btn btn-primary btn-large" disabled={submitting}>
+                <button type="submit" className="btn btn-solid btn-large" disabled={submitting}>
                   <i className={`fas ${submitting ? 'fa-spinner fa-spin' : 'fa-trash-alt'}`}></i>
                   {submitting ? 'Submitting...' : 'Submit Deletion Request'}
                 </button>

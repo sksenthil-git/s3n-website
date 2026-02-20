@@ -219,7 +219,7 @@ function Contact() {
                   </label>
                 </div>
 
-                <button type="submit" className="btn btn-primary btn-large" disabled={submitting}>
+                <button type="submit" className="btn btn-solid btn-large" disabled={submitting}>
                   <i className={`fas ${submitting ? 'fa-spinner fa-spin' : 'fa-paper-plane'}`}></i>
                   {submitting ? 'Sending...' : 'Send Message'}
                 </button>
