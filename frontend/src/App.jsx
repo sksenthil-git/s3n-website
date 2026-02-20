@@ -4,6 +4,7 @@ import About from './pages/About'
 import Services from './pages/Services'
 import Testimonials from './pages/Testimonials'
 import Contact from './pages/Contact'
+import DataDeletion from './pages/DataDeletion'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/services" element={<Services />} />
         <Route path="/testimonials" element={<Testimonials />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/data-deletion" element={<DataDeletion />} />
       </Routes>
     </BrowserRouter>
   )

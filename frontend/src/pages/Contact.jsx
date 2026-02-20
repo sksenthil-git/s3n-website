@@ -8,10 +8,10 @@ function Contact() {
     phone: '', service: '', budget: '', timeline: '', message: '', newsletter: false,
   })
   const [formMessage, setFormMessage] = useState(null)
+  const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
     document.title = 'Contact Us - S3N Technologies'
-
     document.body.style.opacity = '0'
     document.body.style.transition = 'opacity 0.3s ease-in-out'
     setTimeout(() => { document.body.style.opacity = '1' }, 100)
@@ -22,8 +22,9 @@ function Contact() {
     setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+
     if (!formData.firstName || !formData.lastName || !formData.email || !formData.message) {
       setFormMessage({ type: 'error', text: 'Please fill in all required fields.' })
       setTimeout(() => setFormMessage(null), 5000)
@@ -35,9 +36,37 @@ function Contact() {
       setTimeout(() => setFormMessage(null), 5000)
       return
     }
-    setFormMessage({ type: 'success', text: 'Thank you! Your message has been sent successfully.' })
-    setTimeout(() => setFormMessage(null), 5000)
+
+    setSubmitting(true)
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+      const data = await res.json()
+      setFormMessage({
+        type: data.success ? 'success' : 'error',
+        text: data.message,
+      })
+    } catch {
+      setFormMessage({ type: 'error', text: 'Failed to send message. Please try again.' })
+    } finally {
+      setSubmitting(false)
+      setTimeout(() => setFormMessage(null), 5000)
+    }
   }
+
+  const msgStyle = (type) => ({
+    padding: '15px',
+    margin: '20px 0',
+    borderRadius: '8px',
+    fontWeight: 500,
+    textAlign: 'center',
+    ...(type === 'success'
+      ? { background: '#d4edda', color: '#155724', border: '1px solid #c3e6cb' }
+      : { background: '#f8d7da', color: '#721c24', border: '1px solid #f5c6cb' }),
+  })
 
   return (
     <>
@@ -97,22 +126,7 @@ function Contact() {
               <form className="contact-form" onSubmit={handleSubmit}>
                 <h3>Send Us a Message</h3>
 
-                {formMessage && (
-                  <div
-                    style={{
-                      padding: '15px',
-                      margin: '20px 0',
-                      borderRadius: '8px',
-                      fontWeight: 500,
-                      textAlign: 'center',
-                      ...(formMessage.type === 'success'
-                        ? { background: '#d4edda', color: '#155724', border: '1px solid #c3e6cb' }
-                        : { background: '#f8d7da', color: '#721c24', border: '1px solid #f5c6cb' }),
-                    }}
-                  >
-                    {formMessage.text}
-                  </div>
-                )}
+                {formMessage && <div style={msgStyle(formMessage.type)}>{formMessage.text}</div>}
 
                 <div className="form-row">
                   <div className="form-group">
@@ -205,9 +219,9 @@ function Contact() {
                   </label>
                 </div>
 
-                <button type="submit" className="btn btn-primary btn-large">
-                  <i className="fas fa-paper-plane"></i>
-                  Send Message
+                <button type="submit" className="btn btn-primary btn-large" disabled={submitting}>
+                  <i className={`fas ${submitting ? 'fa-spinner fa-spin' : 'fa-paper-plane'}`}></i>
+                  {submitting ? 'Sending...' : 'Send Message'}
                 </button>
               </form>
             </div>

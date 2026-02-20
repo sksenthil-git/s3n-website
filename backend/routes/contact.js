@@ -26,6 +26,7 @@ router.post('/', contactLimiter, async (req, res) => {
         auth: { user: config.EMAIL_USER, pass: config.EMAIL_PASS },
       });
 
+      // Notify admin
       await transporter.sendMail({
         from: `"S3N Website" <${config.EMAIL_USER}>`,
         to: config.EMAIL_TO,
@@ -43,6 +44,20 @@ router.post('/', contactLimiter, async (req, res) => {
           <hr/>
           <h3>Message:</h3>
           <p>${message}</p>
+        `,
+      });
+
+      // Acknowledge user
+      await transporter.sendMail({
+        from: `"S3N Technologies" <${config.EMAIL_USER}>`,
+        to: email,
+        subject: 'We received your message — S3N Technologies',
+        html: `
+          <h2>Thank you for reaching out, ${firstName}!</h2>
+          <p>We've received your message and will get back to you within <strong>24 hours</strong>.</p>
+          <p>In the meantime, feel free to explore our services at <a href="${config.FRONTEND_URL}">${config.FRONTEND_URL}</a>.</p>
+          <br/>
+          <p>— S3N Technologies Team</p>
         `,
       });
     } else {

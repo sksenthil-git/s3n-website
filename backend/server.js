@@ -25,6 +25,7 @@ app.use(config.NODE_ENV === 'development' ? morgan('dev') : morgan('combined'));
 
 // Routes
 app.use('/api/contact', require('./routes/contact'));
+app.use('/api/data-deletion', require('./routes/dataDeletion'));
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -45,6 +46,7 @@ app.get('/', (_req, res) => {
     endpoints: {
       health: '/api/health',
       contact: '/api/contact',
+      dataDeletion: '/api/data-deletion',
     },
   });
 });
@@ -76,6 +78,7 @@ const server = app.listen(config.PORT, () => {
   console.log('📋 Available endpoints:');
   console.log(`   GET  /api/health`);
   console.log(`   POST /api/contact`);
+  console.log(`   POST /api/data-deletion`);
   console.log('');
 });
 
