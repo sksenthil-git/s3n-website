@@ -1,0 +1,108 @@
+name: Deploy Backend to Azure
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'backend/**'
+  workflow_dispatch:
+
+env:
+  AZURE_RESOURCE_GROUP: s3n-website-rg
+  BACKEND_APP_NAME: s3n-website-backend
+  FRONTEND_DNS_URL: s3ntechnologies.com
+  NODE_VERSION: '20.x'
+
+jobs:
+  build-and-deploy-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          npm ci --production
+
+      - name: Create backend deployment package
+        run: |
+          cd backend
+          zip -r ../backend-deploy.zip . -x ".env*" -x "*.log"
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          auth-type: SERVICE_PRINCIPAL
+          creds: ${{ secrets.S3N_AZURE_CREDENTIALS }}
+
+      - name: Deploy backend to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.BACKEND_APP_NAME }}
+          package: backend-deploy.zip
+
+      - name: Configure App Service settings
+        run: |
+          az webapp config appsettings set \
+            --name ${{ env.BACKEND_APP_NAME }} \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+            --settings \
+              NODE_ENV=production \
+              FRONTEND_URL="https://www.${{ env.FRONTEND_DNS_URL }}" \
+              EMAIL_HOST="${{ secrets.S3N_EMAIL_HOST }}" \
+              EMAIL_PORT="${{ secrets.S3N_EMAIL_PORT }}" \
+              EMAIL_USER="${{ secrets.S3N_EMAIL_USER }}" \
+              EMAIL_PASS="${{ secrets.S3N_EMAIL_PASS }}" \
+              EMAIL_TO="${{ secrets.S3N_EMAIL_TO }}"
+
+          az webapp config set \
+            --name ${{ env.BACKEND_APP_NAME }} \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+            --startup-file "node server.js"
+
+          az webapp cors remove \
+            --name ${{ env.BACKEND_APP_NAME }} \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+            --allowed-origins "*" || true
+
+          az webapp cors add \
+            --name ${{ env.BACKEND_APP_NAME }} \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+            --allowed-origins \
+              "https://${{ env.FRONTEND_DNS_URL }}" \
+              "https://www.${{ env.FRONTEND_DNS_URL }}"
+
+          az resource update \
+            --name ${{ env.BACKEND_APP_NAME }} \
+            --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+            --namespace Microsoft.Web \
+            --resource-type sites \
+            --set properties.siteConfig.cors.supportCredentials=true
+
+      - name: Restart backend app
+        run: |
+          az webapp restart --name ${{ env.BACKEND_APP_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }}
+
+  health-check:
+    needs: [build-and-deploy-backend]
+    if: needs.build-and-deploy-backend.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for backend to restart
+        run: sleep 60
+
+      - name: Check backend API health
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://${{ env.BACKEND_APP_NAME }}.azurewebsites.net/api/health)
+          if [[ "$response" != "200" ]]; then
+            echo "❌ Backend API health check failed with status $response"
+            exit 1
+          fi
+          echo "✅ Backend API health check passed"
