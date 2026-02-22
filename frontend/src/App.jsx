@@ -5,6 +5,7 @@ import Services from './pages/Services'
 import Testimonials from './pages/Testimonials'
 import Contact from './pages/Contact'
 import DataDeletion from './pages/DataDeletion'
+import ChatWidget from './components/ChatWidget'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/data-deletion" element={<DataDeletion />} />
       </Routes>
+      <ChatWidget />
     </BrowserRouter>
   )
 }
