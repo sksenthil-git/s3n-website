@@ -51,13 +51,13 @@ function Navbar() {
           >
             Services
           </NavLink>
-          <NavLink
+          {/* <NavLink
             to="/testimonials"
             className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
             onClick={closeMenu}
           >
             Testimonials
-          </NavLink>
+          </NavLink> */}
           <NavLink
             to="/contact"
             className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}

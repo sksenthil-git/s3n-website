@@ -4,7 +4,7 @@ import Footer from '../components/Footer'
 
 function Contact() {
   const [formData, setFormData] = useState({
-    firstName: '', lastName: '', email: '', company: '',
+    name: '', email: '', company: '',
     phone: '', service: '', budget: '', timeline: '', message: '', newsletter: false,
   })
   const [formMessage, setFormMessage] = useState(null)
@@ -25,7 +25,7 @@ function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if (!formData.firstName || !formData.lastName || !formData.email || !formData.message) {
+    if (!formData.name || !formData.email || !formData.message) {
       setFormMessage({ type: 'error', text: 'Please fill in all required fields.' })
       setTimeout(() => setFormMessage(null), 5000)
       return
@@ -88,19 +88,19 @@ function Contact() {
 
               <div className="contact-methods">
                 <div className="contact-method">
-                  <div className="contact-icon"><i className="fas fa-envelope"></i></div>
+                  <div className="contact-icon"><i className="fas fa-clock"></i></div>
                   <div className="contact-details">
-                    <h4>Email Us</h4>
-                    <p>sk.senthil@gmail.com</p>
-                    <span>We typically respond within 24 hours</span>
+                    <h4>Quick Response</h4>
+                    <p>We respond to all enquiries within 24 hours</p>
+                    <span>Monday – Friday, business hours</span>
                   </div>
                 </div>
                 <div className="contact-method">
-                  <div className="contact-icon"><i className="fab fa-linkedin"></i></div>
+                  <div className="contact-icon"><i className="fas fa-handshake"></i></div>
                   <div className="contact-details">
-                    <h4>LinkedIn</h4>
-                    <p>Connect with us on LinkedIn</p>
-                    <span><a href="https://www.linkedin.com/in/sksenthil" target="_blank" rel="noreferrer" style={{ color: '#667eea' }}>linkedin.com/in/sksenthil</a></span>
+                    <h4>No Commitment</h4>
+                    <p>Initial conversations are always free</p>
+                    <span>Fill the form and we'll take it from there</span>
                   </div>
                 </div>
                 <div className="contact-method">
@@ -120,15 +120,9 @@ function Contact() {
 
                 {formMessage && <div style={msgStyle(formMessage.type)}>{formMessage.text}</div>}
 
-                <div className="form-row">
-                  <div className="form-group">
-                    <label htmlFor="firstName">First Name *</label>
-                    <input type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} required />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="lastName">Last Name *</label>
-                    <input type="text" id="lastName" name="lastName" value={formData.lastName} onChange={handleChange} required />
-                  </div>
+                <div className="form-group">
+                  <label htmlFor="name">Name *</label>
+                  <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />
                 </div>
 
                 <div className="form-group">
@@ -197,7 +191,7 @@ function Contact() {
                   ></textarea>
                 </div>
 
-                <div className="form-group checkbox-group">
+                {/* <div className="form-group checkbox-group">
                   <label className="checkbox-label">
                     <input
                       type="checkbox"
@@ -209,7 +203,7 @@ function Contact() {
                     <span className="checkmark"></span>
                     Subscribe to our newsletter for AI insights and updates
                   </label>
-                </div>
+                </div> */}
 
                 <button type="submit" className="btn btn-solid btn-large" disabled={submitting}>
                   <i className={`fas ${submitting ? 'fa-spinner fa-spin' : 'fa-paper-plane'}`}></i>
@@ -230,11 +224,7 @@ function Contact() {
                 <h4>Do you provide ongoing support after implementation?</h4>
                 <p>Yes, we offer comprehensive support packages including monitoring, optimization, and updates to ensure your AI solutions continue performing at their best.</p>
               </div>
-              <div className="faq-item">
-                <h4>What industries do you work with?</h4>
-                <p>We work across various industries including healthcare, finance, manufacturing, retail, and technology. Our solutions are customized for each sector's specific needs.</p>
-              </div>
-              <div className="faq-item">
+<div className="faq-item">
                 <h4>How do you ensure data security and privacy?</h4>
                 <p>We follow strict security protocols and compliance standards. All data is encrypted, and we can work within your existing security frameworks and requirements.</p>
               </div>

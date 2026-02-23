@@ -17,16 +17,15 @@ function Footer() {
             <ul>
               <li><Link to="/about">About Us</Link></li>
               <li><Link to="/services">Services</Link></li>
-              <li><Link to="/testimonials">Testimonials</Link></li>
               <li><Link to="/contact">Contact</Link></li>
             </ul>
           </div>
           <div className="footer-section">
-            <h4>Contact Info</h4>
+            <h4>Working Hours</h4>
             <ul>
-              <li><i className="fas fa-envelope"></i> sk.senthil@gmail.com</li>
-              <li><i className="fas fa-phone"></i> +1 (555) 123-4567</li>
-              <li><i className="fas fa-map-marker-alt"></i> Technology Hub, Innovation District</li>
+              <li><i className="fas fa-clock"></i> Mon – Fri: 9am – 6pm</li>
+              <li><i className="fas fa-reply"></i> Responses within 24 hours</li>
+              <li><i className="fas fa-map-marker-alt"></i> HQ: Coimbatore, Tamil Nadu</li>
             </ul>
           </div>
           <div className="footer-section">

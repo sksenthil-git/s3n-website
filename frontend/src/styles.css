@@ -60,8 +60,11 @@ body {
 
 .logo-subtitle {
     font-size: 10px;
-    color: #666;
-    font-weight: 500;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-top: -2px;
     letter-spacing: 1px;
 }
@@ -1496,7 +1499,7 @@ body {
 
 .faq-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 30px;
 }
 

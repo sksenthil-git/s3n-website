@@ -54,7 +54,7 @@ function Services() {
                 <li>Deep Learning Implementation</li>
                 <li>Model Training &amp; Optimization</li>
               </ul>
-              <div className="service-price">Starting at $5,000</div>
+              <Link to="/contact" className="btn btn-solid" style={{ display: 'inline-block', marginTop: '16px' }}>Get Started</Link>
             </div>
 
             <div className="service-card">
@@ -67,7 +67,7 @@ function Services() {
                 <li>Smart Document Processing</li>
                 <li>Business Process Optimization</li>
               </ul>
-              <div className="service-price">Starting at $8,000</div>
+              <Link to="/contact" className="btn btn-solid" style={{ display: 'inline-block', marginTop: '16px' }}>Get Started</Link>
             </div>
 
             <div className="service-card">
@@ -80,7 +80,7 @@ function Services() {
                 <li>Statistical Analysis</li>
                 <li>Custom Reporting Solutions</li>
               </ul>
-              <div className="service-price">Starting at $3,500</div>
+              <Link to="/contact" className="btn btn-solid" style={{ display: 'inline-block', marginTop: '16px' }}>Get Started</Link>
             </div>
 
             <div className="service-card">
@@ -93,7 +93,7 @@ function Services() {
                 <li>Text Classification</li>
                 <li>Language Translation</li>
               </ul>
-              <div className="service-price">Starting at $6,000</div>
+              <Link to="/contact" className="btn btn-solid" style={{ display: 'inline-block', marginTop: '16px' }}>Get Started</Link>
             </div>
 
             <div className="service-card">
@@ -106,7 +106,7 @@ function Services() {
                 <li>Facial Recognition</li>
                 <li>Quality Inspection Systems</li>
               </ul>
-              <div className="service-price">Starting at $7,500</div>
+              <Link to="/contact" className="btn btn-solid" style={{ display: 'inline-block', marginTop: '16px' }}>Get Started</Link>
             </div>
 
             <div className="service-card">
@@ -119,7 +119,7 @@ function Services() {
                 <li>Technology Roadmapping</li>
                 <li>ROI Analysis</li>
               </ul>
-              <div className="service-price">Starting at $2,500</div>
+              <Link to="/contact" className="btn btn-solid" style={{ display: 'inline-block', marginTop: '16px' }}>Get Started</Link>
             </div>
           </div>
 
