@@ -77,7 +77,7 @@ function Home() {
       })
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' })
 
-    document.querySelectorAll('.stats, .process-step, .industry-card, .why-card').forEach(el => {
+    document.querySelectorAll('.stats, .process-step, .industry-card, .why-card, .capability-card').forEach(el => {
       el.style.opacity = '0'
       el.style.transform = 'translateY(30px)'
       el.style.transition = 'all 0.6s ease'
@@ -109,7 +109,7 @@ function Home() {
           <div className="hero-text">
             <h1 className="hero-title">{displayedTitle || '\u00A0'}</h1>
             <p className="hero-subtitle">
-              Cutting-edge AI solutions that revolutionize business operations and decision-making.
+              We design, build, and scale practical AI and digital solutions for businesses of every size.
             </p>
             <div className="hero-buttons">
               <Link to="/contact" className="btn btn-primary">Get Started</Link>
@@ -173,25 +173,24 @@ function Home() {
         </div>
       </section>
 
-      {/* ── Stats ── */}
+      {/* ── Strengths ── */}
       <section className="stats">
         <div className="container">
           <div className="stats-grid">
             <div className="stat-item">
-              <div className="stat-number" data-target="500">0</div>
-              <div className="stat-label">Projects Completed</div>
+              <div className="stat-badge"><i className="fas fa-calendar-check"></i></div>
+              <div className="stat-label">20+ Years Experience</div>
+              <div className="stat-sub">Software &amp; cloud architecture</div>
             </div>
             <div className="stat-item">
-              <div className="stat-number" data-target="150">0</div>
-              <div className="stat-label">Happy Clients</div>
+              <div className="stat-badge"><i className="fas fa-unlock-alt"></i></div>
+              <div className="stat-label">No Vendor Lock-In</div>
+              <div className="stat-sub">Open standards, always</div>
             </div>
             <div className="stat-item">
-              <div className="stat-number" data-target="99">0</div>
-              <div className="stat-label">% Success Rate</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number" data-target="24">0</div>
-              <div className="stat-label">7 Support</div>
+              <div className="stat-badge"><i className="fas fa-comments"></i></div>
+              <div className="stat-label">Direct Access</div>
+              <div className="stat-sub">No hand-offs or middlemen</div>
             </div>
           </div>
         </div>
@@ -244,23 +243,23 @@ function Home() {
         <div className="container">
           <h2 className="section-title">Why Choose S3N?</h2>
           <p className="section-subtitle">
-            We combine deep technical expertise with a business-first mindset to deliver AI that actually works.
+            Smaller team, faster decisions, better accountability, and solutions built to last.
           </p>
           <div className="why-grid">
             <div className="why-card">
-              <div className="why-icon"><i className="fas fa-award"></i></div>
-              <h4>Proven Expertise</h4>
-              <p>Years of hands-on experience building production AI systems across complex, regulated environments.</p>
+              <div className="why-icon"><i className="fas fa-user-tie"></i></div>
+              <h4>Direct Contacts</h4>
+              <p>You work with direct contacts from day one to delivery. No account managers, no hand-offs, no lost context between meetings.</p>
             </div>
             <div className="why-card">
-              <div className="why-icon"><i className="fas fa-lock"></i></div>
-              <h4>Enterprise Security</h4>
-              <p>Your data never leaves your control. We build privacy-first solutions that meet the highest compliance standards.</p>
+              <div className="why-icon"><i className="fas fa-unlock-alt"></i></div>
+              <h4>No Vendor Lock-In</h4>
+              <p>We build with open standards and hand over fully documented, maintainable code. You own everything — completely and permanently.</p>
             </div>
             <div className="why-card">
-              <div className="why-icon"><i className="fas fa-headset"></i></div>
-              <h4>Dedicated Support</h4>
-              <p>A committed team that stays with you post-launch — from model monitoring to continuous improvement.</p>
+              <div className="why-icon"><i className="fas fa-seedling"></i></div>
+              <h4>Long-Term Accountability</h4>
+              <p>We stay involved after launch. Monitoring, tuning, and improvements are part of how we work — not an optional extra.</p>
             </div>
           </div>
         </div>
@@ -271,7 +270,7 @@ function Home() {
         <div className="container">
           <div className="cta-content">
             <h2>Ready to Transform Your Business?</h2>
-            <p>Join hundreds of companies already using our AI solutions to gain competitive advantage.</p>
+            <p>Let's discuss your challenges and build the right solution together.</p>
             <Link to="/contact" className="btn btn-primary btn-large">Start Your AI Journey</Link>
           </div>
         </div>

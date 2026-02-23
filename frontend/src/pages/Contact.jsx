@@ -84,7 +84,7 @@ function Contact() {
           <div className="contact-content">
             <div className="contact-info">
               <h2>Let's Start a Conversation</h2>
-              <p>Whether you're looking to implement AI solutions, need consultation, or have questions about our services, we're here to help. Reach out to our team of experts.</p>
+              <p>Whether you're exploring an idea, ready to kick off a project, or just want to understand what's possible — I'm happy to talk. Reach out directly and you'll hear back from the founder.</p>
 
               <div className="contact-methods">
                 <div className="contact-method">
@@ -96,19 +96,11 @@ function Contact() {
                   </div>
                 </div>
                 <div className="contact-method">
-                  <div className="contact-icon"><i className="fas fa-phone"></i></div>
+                  <div className="contact-icon"><i className="fab fa-linkedin"></i></div>
                   <div className="contact-details">
-                    <h4>Call Us</h4>
-                    <p>+1 (555) 123-4567</p>
-                    <span>Mon-Fri 9AM-6PM EST</span>
-                  </div>
-                </div>
-                <div className="contact-method">
-                  <div className="contact-icon"><i className="fas fa-map-marker-alt"></i></div>
-                  <div className="contact-details">
-                    <h4>Visit Us</h4>
-                    <p>Technology Hub<br />Innovation District</p>
-                    <span>By appointment only</span>
+                    <h4>LinkedIn</h4>
+                    <p>Connect with us on LinkedIn</p>
+                    <span><a href="https://www.linkedin.com/in/sksenthil" target="_blank" rel="noreferrer" style={{ color: '#667eea' }}>linkedin.com/in/sksenthil</a></span>
                   </div>
                 </div>
                 <div className="contact-method">

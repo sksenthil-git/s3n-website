@@ -37,7 +37,7 @@ function Services() {
       <section className="page-header">
         <div className="container">
           <h1>Our AI Services</h1>
-          <p>Comprehensive artificial intelligence solutions tailored to transform your business operations and drive innovation.</p>
+          <p>Practical AI and digital solutions built and delivered by the founder — from initial consultation through to production deployment.</p>
         </div>
       </section>
 
