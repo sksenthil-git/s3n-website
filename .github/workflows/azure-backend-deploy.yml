@@ -9,8 +9,8 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_RESOURCE_GROUP: s3n-website-rg
-  BACKEND_APP_NAME: s3n-website-backend
+  AZURE_RESOURCE_GROUP: all-apps-backend-API-rg
+  BACKEND_APP_NAME: s3n-website-APIs
   FRONTEND_DNS_URL: s3ntechnologies.com
   NODE_VERSION: '20.x'
 
