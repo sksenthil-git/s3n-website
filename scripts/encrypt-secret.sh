@@ -2,20 +2,18 @@
 # ─────────────────────────────────────────────────────────────
 # encrypt-secret.sh
 # Encrypts a plain-text value using AES-256-CBC (Node.js crypto).
-# The encrypted output can be safely stored in Azure App Settings.
-# The backend decrypts it at runtime using the same ENCRYPTION_KEY.
+# The encrypted output is stored in Azure App Settings.
+# The ENCRYPTION_KEY is stored in backend/utils/crypto.js (NOT in Azure).
+# An attacker needs BOTH to decrypt — Azure value alone is useless.
 #
 # Usage:
 #   1. First time – generate a key AND encrypt a value:
 #        ./scripts/encrypt-secret.sh --gen-key <plain_text>
+#      → Copy the key into PRODUCTION_KEY in backend/utils/crypto.js
+#      → Copy the encrypted value into Azure App Settings as EMAIL_PASS
 #
-#   2. Subsequent runs – reuse an existing key:
+#   2. Re-encrypt with existing key from crypto.js:
 #        ENCRYPTION_KEY=<your_64_char_hex_key> ./scripts/encrypt-secret.sh <plain_text>
-#
-# Steps after running:
-#   1. Add ENCRYPTION_KEY  as a GitHub secret  (S3N_ENCRYPTION_KEY)
-#   2. Add ENCRYPTION_KEY  as an Azure App Setting
-#   3. Replace EMAIL_PASS  in Azure App Settings with the encrypted value printed below
 # ─────────────────────────────────────────────────────────────
 
 set -e

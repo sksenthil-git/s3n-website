@@ -2,18 +2,31 @@ const crypto = require('crypto');
 
 const ALGORITHM = 'aes-256-cbc';
 
+// ─────────────────────────────────────────────────────────────────────────────
+// ENCRYPTION_KEY — lives here in the app code, NOT in Azure App Settings.
+// An attacker with only Azure access sees the encrypted EMAIL_PASS but cannot
+// decrypt it without this key. They need both the Azure value AND this file.
+//
+// To generate a new key:
+//   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+//
+// Then run the encrypt script to get the encrypted EMAIL_PASS for Azure:
+//   ./scripts/encrypt-secret.sh --use-key <key_below> "your_gmail_app_password"
+//
+// Local .env can override this key for dev (ENCRYPTION_KEY=xxx in .env).
+// ─────────────────────────────────────────────────────────────────────────────
+const PRODUCTION_KEY = 'REPLACE_WITH_YOUR_64_CHAR_HEX_KEY';
+
+function getKey() {
+  return process.env.ENCRYPTION_KEY || PRODUCTION_KEY;
+}
+
 /**
  * Decrypts a value encrypted by scripts/encrypt-secret.sh.
  * Expected format: "<16-byte-iv-hex>:<ciphertext-hex>"
- *
- * Requires ENCRYPTION_KEY env var (64 hex characters = 32 bytes).
  */
 function decrypt(encryptedText) {
-  const keyHex = process.env.ENCRYPTION_KEY;
-  if (!keyHex) {
-    throw new Error('ENCRYPTION_KEY environment variable is not set');
-  }
-
+  const keyHex = getKey();
   const key = Buffer.from(keyHex, 'hex');
   if (key.length !== 32) {
     throw new Error('ENCRYPTION_KEY must be 64 hex characters (32 bytes)');
