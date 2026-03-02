@@ -155,7 +155,6 @@ function About() {
                     <p className="member-description">15+ years in software engineering, cloud architecture, and AI delivery. I lead every engagement personally — from scoping and design through to deployment and post-launch support. No account managers, no hand-offs.</p>
                     <div className="member-links">
                       <a href="https://www.linkedin.com/in/sksenthil" target="_blank" rel="noreferrer"><i className="fab fa-linkedin"></i></a>
-                      <a href="mailto:sk.senthil@gmail.com"><i className="fas fa-envelope"></i></a>
                     </div>
                   </div>
                 </div>

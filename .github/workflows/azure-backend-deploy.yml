@@ -50,17 +50,15 @@ jobs:
 
       - name: Configure App Service settings
         run: |
+          # Only deployment-related settings are managed here.
+          # Credentials (EMAIL_*, ENCRYPTION_KEY) are set directly in
+          # Azure App Settings and are NOT overwritten by this pipeline.
           az webapp config appsettings set \
             --name ${{ env.BACKEND_APP_NAME }} \
             --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
             --settings \
               NODE_ENV=production \
-              FRONTEND_URL="https://www.${{ env.FRONTEND_DNS_URL }}" \
-              EMAIL_HOST="${{ secrets.S3N_EMAIL_HOST }}" \
-              EMAIL_PORT="${{ secrets.S3N_EMAIL_PORT }}" \
-              EMAIL_USER="${{ secrets.S3N_EMAIL_USER }}" \
-              EMAIL_PASS="${{ secrets.S3N_EMAIL_PASS }}" \
-              EMAIL_TO="${{ secrets.S3N_EMAIL_TO }}"
+              FRONTEND_URL="https://www.${{ env.FRONTEND_DNS_URL }}"
 
           az webapp config set \
             --name ${{ env.BACKEND_APP_NAME }} \

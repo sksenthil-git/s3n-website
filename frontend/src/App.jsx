@@ -12,6 +12,7 @@ import Services from './pages/Services'
 // import Testimonials from './pages/Testimonials'
 import Contact from './pages/Contact'
 import DataDeletion from './pages/DataDeletion'
+import Privacy from './pages/Privacy'
 import ChatWidget from './components/ChatWidget'
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         {/* <Route path="/testimonials" element={<Testimonials />} /> */}
         <Route path="/contact" element={<Contact />} />
         <Route path="/data-deletion" element={<DataDeletion />} />
+        <Route path="/privacy" element={<Privacy />} />
       </Routes>
       <ChatWidget />
     </BrowserRouter>

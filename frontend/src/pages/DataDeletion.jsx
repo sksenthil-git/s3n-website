@@ -86,7 +86,7 @@ function DataDeletion() {
       <section className="page-content">
         <div className="container">
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', alignItems: 'start', marginBottom: '3rem' }}>
+          <div className="data-deletion-content">
 
             {/* Info panel */}
             <div>
@@ -189,7 +189,7 @@ function DataDeletion() {
               </div>
               <div className="faq-item">
                 <h4>Can I cancel my deletion request?</h4>
-                <p>You may cancel your request by contacting us at sk.senthil@gmail.com before the deletion is processed. Once deleted, data cannot be recovered.</p>
+                <p>You may cancel your request by <a href="/contact">contacting us</a> before the deletion is processed. Once deleted, data cannot be recovered.</p>
               </div>
               <div className="faq-item">
                 <h4>Do I need to delete each app separately?</h4>

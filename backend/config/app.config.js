@@ -1,4 +1,5 @@
 require('dotenv').config();
+const { decryptIfNeeded } = require('../utils/crypto');
 
 module.exports = {
   NODE_ENV: process.env.NODE_ENV || 'development',
@@ -8,6 +9,6 @@ module.exports = {
   EMAIL_HOST: process.env.EMAIL_HOST || 'smtp.gmail.com',
   EMAIL_PORT: process.env.EMAIL_PORT || 587,
   EMAIL_USER: process.env.EMAIL_USER || '',
-  EMAIL_PASS: process.env.EMAIL_PASS || '',
-  EMAIL_TO: process.env.EMAIL_TO || 'sk.senthil@gmail.com',
+  EMAIL_PASS: decryptIfNeeded(process.env.EMAIL_PASS || ''),
+  EMAIL_TO: process.env.EMAIL_TO || '',
 };

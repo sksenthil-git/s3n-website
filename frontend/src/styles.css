@@ -1212,6 +1212,70 @@ body {
     padding: 80px 0;
 }
 
+/* Legal pages (Privacy, Data Deletion alt layout) */
+.legal-page {
+    padding: 100px 0 80px;
+}
+
+.legal-content h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a202c;
+    margin-bottom: 10px;
+}
+
+.legal-content .last-updated {
+    color: #6b7280;
+    margin-bottom: 40px;
+    font-size: 0.95rem;
+}
+
+.legal-content section {
+    margin-bottom: 40px;
+}
+
+.legal-content h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1a202c;
+    margin-bottom: 12px;
+    margin-top: 30px;
+}
+
+.legal-content h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
+    margin-top: 20px;
+}
+
+.legal-content p {
+    color: #4b5563;
+    line-height: 1.8;
+    margin-bottom: 14px;
+}
+
+.legal-content ul {
+    color: #4b5563;
+    line-height: 1.8;
+    padding-left: 24px;
+    margin-bottom: 14px;
+}
+
+.legal-content ul li {
+    margin-bottom: 6px;
+}
+
+.legal-content a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.legal-content a:hover {
+    text-decoration: underline;
+}
+
 /* Testimonial Cards */
 .testimonial-card {
     background: white;
@@ -1285,12 +1349,16 @@ body {
         left: 0;
     }
     
+    .hero {
+        padding-top: 70px;
+    }
+
     .hero-content {
         grid-template-columns: 1fr;
         text-align: center;
         gap: 40px;
     }
-    
+
     .hero-title {
         font-size: 2.5rem;
     }
@@ -1318,11 +1386,6 @@ body {
     .page-header h1 {
         font-size: 2.2rem;
     }
-    
-    .contact-form {
-        margin: 20px;
-        padding: 30px 20px;
-    }
 }
 
 @media (max-width: 480px) {
@@ -1341,6 +1404,15 @@ body {
     .stat-number {
         font-size: 2.5rem;
     }
+}
+
+/* Data Deletion Page */
+.data-deletion-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+    margin-bottom: 3rem;
 }
 
 /* Contact Page Styles */
@@ -1499,7 +1571,7 @@ body {
 
 .faq-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
 }
 
@@ -2397,5 +2469,20 @@ body {
     .section-subtitle {
         margin: -20px auto 40px;
         font-size: 1rem;
+    }
+
+    .data-deletion-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .contact-form-container {
+        position: static;
+    }
+
+    .contact-form {
+        max-width: 100%;
+        margin: 0;
+        padding: 30px 20px;
     }
 }
