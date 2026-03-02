@@ -1,62 +1,42 @@
 #!/bin/bash
 # ─────────────────────────────────────────────────────────────
 # encrypt-secret.sh
-# Encrypts a plain-text value using AES-256-CBC (Node.js crypto).
-# The encrypted output is stored in Azure App Settings.
-# The ENCRYPTION_KEY is stored in backend/utils/crypto.js (NOT in Azure).
-# An attacker needs BOTH to decrypt — Azure value alone is useless.
+# Reads PRODUCTION_KEY from backend/utils/crypto.js and uses it
+# to encrypt a plain-text value. Store the output in Azure App Settings.
 #
 # Usage:
-#   1. First time – generate a key AND encrypt a value:
-#        ./scripts/encrypt-secret.sh --gen-key <plain_text>
-#      → Copy the key into PRODUCTION_KEY in backend/utils/crypto.js
-#      → Copy the encrypted value into Azure App Settings as EMAIL_PASS
+#   ./scripts/encrypt-secret.sh <plain_text>
 #
-#   2. Re-encrypt with existing key from crypto.js:
-#        ENCRYPTION_KEY=<your_64_char_hex_key> ./scripts/encrypt-secret.sh <plain_text>
+# Example:
+#   ./scripts/encrypt-secret.sh "your_gmail_app_password"
 # ─────────────────────────────────────────────────────────────
 
 set -e
 
-GEN_KEY=false
-PLAIN_TEXT=""
-
-# Parse arguments
-if [ "$1" = "--gen-key" ]; then
-  GEN_KEY=true
-  PLAIN_TEXT="$2"
-else
-  PLAIN_TEXT="$1"
-fi
+PLAIN_TEXT="$1"
+CRYPTO_FILE="$(dirname "$0")/../backend/utils/crypto.js"
 
 if [ -z "$PLAIN_TEXT" ]; then
-  echo "Usage:"
-  echo "  First time:  ./scripts/encrypt-secret.sh --gen-key <plain_text>"
-  echo "  Reuse key:   ENCRYPTION_KEY=<hex_key> ./scripts/encrypt-secret.sh <plain_text>"
+  echo "Usage: ./scripts/encrypt-secret.sh <plain_text>"
   exit 1
 fi
 
-# Generate key if requested, otherwise require it from env
-if [ "$GEN_KEY" = true ]; then
-  ENCRYPTION_KEY=$(node -e "console.log(require('crypto').randomBytes(32).toString('hex'))")
-  echo ""
-  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  echo "  ENCRYPTION_KEY (save this — you cannot recover it later):"
-  echo "  $ENCRYPTION_KEY"
-  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-fi
-
-if [ -z "$ENCRYPTION_KEY" ]; then
-  echo "Error: ENCRYPTION_KEY is not set."
-  echo "Run with --gen-key to generate one, or export ENCRYPTION_KEY=<hex_key> first."
+if [ ! -f "$CRYPTO_FILE" ]; then
+  echo "Error: Cannot find backend/utils/crypto.js"
   exit 1
 fi
 
-# Encrypt using Node.js crypto (AES-256-CBC, random IV prepended to output)
+# Encrypt using the same PRODUCTION_KEY and SHA-256 key derivation as crypto.js
 ENCRYPTED=$(node -e "
 const crypto = require('crypto');
-const key = Buffer.from('$ENCRYPTION_KEY', 'hex');
-if (key.length !== 32) { console.error('ENCRYPTION_KEY must be 64 hex chars (32 bytes)'); process.exit(1); }
+const fs = require('fs');
+
+const src = fs.readFileSync('$CRYPTO_FILE', 'utf8');
+const match = src.match(/PRODUCTION_KEY\s*=\s*['\"]([^'\"]+)['\"]/);
+if (!match) { console.error('PRODUCTION_KEY not found in crypto.js'); process.exit(1); }
+
+const passphrase = match[1];
+const key = crypto.createHash('sha256').update(passphrase).digest();
 const iv = crypto.randomBytes(16);
 const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
 let enc = cipher.update('$PLAIN_TEXT', 'utf8', 'hex');
