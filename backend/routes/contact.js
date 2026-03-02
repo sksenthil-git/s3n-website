@@ -7,18 +7,23 @@ const { contactLimiter } = require('../middleware/rateLimiter');
 // POST /api/contact
 router.post('/', contactLimiter, async (req, res) => {
   const { name, email, company, phone, service, budget, timeline, message } = req.body;
+  console.log('[contact] Request received:', { name, email, company, service });
 
   if (!name || !email || !message) {
+    console.log('[contact] Validation failed: missing required fields');
     return res.status(400).json({ success: false, message: 'Please fill in all required fields.' });
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
+    console.log('[contact] Validation failed: invalid email format:', email);
     return res.status(400).json({ success: false, message: 'Please enter a valid email address.' });
   }
 
   try {
     if (config.EMAIL_USER && config.EMAIL_PASS) {
+      console.log('[contact] Email credentials present — creating transporter');
+      console.log('[contact] SMTP config:', { host: config.EMAIL_HOST, port: config.EMAIL_PORT, user: config.EMAIL_USER });
       const transporter = nodemailer.createTransport({
         host: config.EMAIL_HOST,
         port: config.EMAIL_PORT,
@@ -26,6 +31,7 @@ router.post('/', contactLimiter, async (req, res) => {
         auth: { user: config.EMAIL_USER, pass: config.EMAIL_PASS },
       });
 
+      console.log('[contact] Sending admin notification to:', config.EMAIL_TO);
       // Notify admin
       await transporter.sendMail({
         from: `"S3N Website" <${config.EMAIL_USER}>`,
@@ -46,6 +52,7 @@ router.post('/', contactLimiter, async (req, res) => {
         `,
       });
 
+      console.log('[contact] Admin notification sent. Sending acknowledgement to:', email);
       // Acknowledge user
       await transporter.sendMail({
         from: `"S3N Technologies" <${config.EMAIL_USER}>`,
@@ -59,14 +66,16 @@ router.post('/', contactLimiter, async (req, res) => {
           <p>— S3N Technologies Team</p>
         `,
       });
+      console.log('[contact] Acknowledgement sent. All emails delivered successfully.');
     } else {
-      // Log to console in development when email is not configured
-      console.log('Contact form submission (email not configured):', { name, email, message });
+      console.warn('[contact] Email credentials missing — EMAIL_USER:', config.EMAIL_USER || '(empty)', '| EMAIL_PASS:', config.EMAIL_PASS ? '(set)' : '(empty)');
+      console.log('[contact] Skipping email. Form data:', { name, email, message });
     }
 
     res.json({ success: true, message: 'Thank you! Your message has been sent successfully.' });
   } catch (error) {
-    console.error('Contact form error:', error);
+    console.error('[contact] Email send failed:', error.message);
+    console.error('[contact] Full error:', error);
     res.status(500).json({ success: false, message: 'Failed to send message. Please try again.' });
   }
 });

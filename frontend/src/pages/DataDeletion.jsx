@@ -43,17 +43,21 @@ function DataDeletion() {
 
     setSubmitting(true)
     try {
+      console.log('[DataDeletion] Submitting to /api/data-deletion', { email: formData.email, app: formData.app })
       const res = await fetch('/api/data-deletion', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       })
+      console.log('[DataDeletion] Response status:', res.status)
       const data = await res.json()
+      console.log('[DataDeletion] Response body:', data)
       setFormMessage({
         type: data.success ? 'success' : 'error',
         text: data.message,
       })
-    } catch {
+    } catch (err) {
+      console.error('[DataDeletion] Fetch error:', err)
       setFormMessage({ type: 'error', text: 'Failed to submit request. Please try again.' })
     } finally {
       setSubmitting(false)

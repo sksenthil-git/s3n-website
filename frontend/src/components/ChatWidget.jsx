@@ -11,12 +11,15 @@ function ChatWidget() {
     e.preventDefault()
     setStatus('sending')
     try {
+      console.log('[ChatWidget] Submitting to /api/contact', { name: form.name, email: form.email })
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       })
+      console.log('[ChatWidget] Response status:', res.status)
       const data = await res.json()
+      console.log('[ChatWidget] Response body:', data)
       if (data.success) {
         setStatus('success')
         setTimeout(() => {
@@ -25,9 +28,11 @@ function ChatWidget() {
           setOpen(false)
         }, 3000)
       } else {
+        console.warn('[ChatWidget] API returned success=false:', data.message)
         setStatus('error')
       }
-    } catch {
+    } catch (err) {
+      console.error('[ChatWidget] Fetch error:', err)
       setStatus('error')
     }
   }

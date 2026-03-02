@@ -39,17 +39,21 @@ function Contact() {
 
     setSubmitting(true)
     try {
+      console.log('[Contact] Submitting form to /api/contact', { name: formData.name, email: formData.email })
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       })
+      console.log('[Contact] Response status:', res.status)
       const data = await res.json()
+      console.log('[Contact] Response body:', data)
       setFormMessage({
         type: data.success ? 'success' : 'error',
         text: data.message,
       })
-    } catch {
+    } catch (err) {
+      console.error('[Contact] Fetch error:', err)
       setFormMessage({ type: 'error', text: 'Failed to send message. Please try again.' })
     } finally {
       setSubmitting(false)
