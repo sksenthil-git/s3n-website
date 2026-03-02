@@ -15,7 +15,7 @@ const ALGORITHM = 'aes-256-cbc';
 //
 // Local .env can override this key for dev (ENCRYPTION_KEY=xxx in .env).
 // ─────────────────────────────────────────────────────────────────────────────
-const PRODUCTION_KEY = 'REPLACE_WITH_YOUR_64_CHAR_HEX_KEY';
+const PRODUCTION_KEY = 'Poda-antha-aandavaney-s3n-pakkam';
 
 function getKey() {
   return process.env.ENCRYPTION_KEY || PRODUCTION_KEY;
