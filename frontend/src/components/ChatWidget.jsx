@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { submitContactForm } from '../services/api'
 
 function ChatWidget() {
   const [open, setOpen] = useState(false)
@@ -11,15 +12,7 @@ function ChatWidget() {
     e.preventDefault()
     setStatus('sending')
     try {
-      console.log('[ChatWidget] Submitting to /api/contact', { name: form.name, email: form.email })
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      })
-      console.log('[ChatWidget] Response status:', res.status)
-      const data = await res.json()
-      console.log('[ChatWidget] Response body:', data)
+      const data = await submitContactForm(form)
       if (data.success) {
         setStatus('success')
         setTimeout(() => {
@@ -28,11 +21,11 @@ function ChatWidget() {
           setOpen(false)
         }, 3000)
       } else {
-        console.warn('[ChatWidget] API returned success=false:', data.message)
+        // console.warn('[ChatWidget] API returned success=false:', data.message)
         setStatus('error')
       }
     } catch (err) {
-      console.error('[ChatWidget] Fetch error:', err)
+      // console.error('[ChatWidget] Fetch error:', err)
       setStatus('error')
     }
   }
@@ -80,6 +73,7 @@ function ChatWidget() {
                     value={form.name}
                     onChange={handleChange}
                     required
+                    maxLength={100}
                   />
                 </div>
                 <div className="chat-form-group">
@@ -90,6 +84,7 @@ function ChatWidget() {
                     value={form.email}
                     onChange={handleChange}
                     required
+                    maxLength={254}
                   />
                 </div>
                 <div className="chat-form-group">
@@ -99,6 +94,7 @@ function ChatWidget() {
                     value={form.message}
                     onChange={handleChange}
                     required
+                    maxLength={2000}
                   />
                 </div>
                 {status === 'error' && (

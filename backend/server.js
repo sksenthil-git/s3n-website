@@ -80,13 +80,13 @@ const server = app.listen(config.PORT, () => {
   console.log(`   POST /api/contact`);
   console.log(`   POST /api/data-deletion`);
   console.log('');
-  console.log('📧 Email config check:');
-  console.log(`   EMAIL_HOST : ${config.EMAIL_HOST}`);
-  console.log(`   EMAIL_PORT : ${config.EMAIL_PORT}`);
-  console.log(`   EMAIL_USER : ${config.EMAIL_USER || '(not set)'}`);
-  console.log(`   EMAIL_PASS : ${config.EMAIL_PASS ? '(set, length=' + config.EMAIL_PASS.length + ')' : '(not set)'}`);
-  console.log(`   EMAIL_TO   : ${config.EMAIL_TO || '(not set)'}`);
-  console.log('');
+  // console.log('📧 Email config check:');
+  // console.log(`   EMAIL_HOST : ${config.EMAIL_HOST}`);
+  // console.log(`   EMAIL_PORT : ${config.EMAIL_PORT}`);
+  // console.log(`   EMAIL_USER : ${config.EMAIL_USER || '(not set)'}`);
+  // console.log(`   EMAIL_PASS : ${config.EMAIL_PASS ? '(set, length=' + config.EMAIL_PASS.length + ')' : '(not set)'}`);
+  // console.log(`   EMAIL_TO   : ${config.EMAIL_TO || '(not set)'}`);
+  // console.log('');
 });
 
 server.on('error', (error) => {

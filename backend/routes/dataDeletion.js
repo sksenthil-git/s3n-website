@@ -3,6 +3,7 @@ const router = express.Router();
 const nodemailer = require('nodemailer');
 const config = require('../config/app.config');
 const { contactLimiter } = require('../middleware/rateLimiter');
+const { sanitizeEmail } = require('../utils/sanitize');
 
 const VALID_APPS = [
   'Deal Search (deal-search.com)',
@@ -12,29 +13,30 @@ const VALID_APPS = [
 
 // POST /api/data-deletion
 router.post('/', contactLimiter, async (req, res) => {
-  const { email, app } = req.body;
-  console.log('[data-deletion] Request received:', { email, app });
+  const email = sanitizeEmail(req.body.email);
+  const app   = typeof req.body.app === 'string' ? req.body.app.trim() : '';
+  // console.log('[data-deletion] Request received:', { email, app });
 
   if (!email || !app) {
-    console.log('[data-deletion] Validation failed: missing email or app');
+    // console.log('[data-deletion] Validation failed: missing email or app');
     return res.status(400).json({ success: false, message: 'Email address and app selection are required.' });
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
-    console.log('[data-deletion] Validation failed: invalid email format:', email);
+    // console.log('[data-deletion] Validation failed: invalid email format:', email);
     return res.status(400).json({ success: false, message: 'Please enter a valid email address.' });
   }
 
   if (!VALID_APPS.includes(app)) {
-    console.log('[data-deletion] Validation failed: invalid app selection:', app);
+    // console.log('[data-deletion] Validation failed: invalid app selection:', app);
     return res.status(400).json({ success: false, message: 'Invalid app selection.' });
   }
 
   try {
     if (config.EMAIL_USER && config.EMAIL_PASS) {
-      console.log('[data-deletion] Email credentials present — creating transporter');
-      console.log('[data-deletion] SMTP config:', { host: config.EMAIL_HOST, port: config.EMAIL_PORT, user: config.EMAIL_USER });
+      // console.log('[data-deletion] Email credentials present — creating transporter');
+      // console.log('[data-deletion] SMTP config:', { host: config.EMAIL_HOST, port: config.EMAIL_PORT, user: config.EMAIL_USER });
       const transporter = nodemailer.createTransport({
         host: config.EMAIL_HOST,
         port: config.EMAIL_PORT,
@@ -42,7 +44,7 @@ router.post('/', contactLimiter, async (req, res) => {
         auth: { user: config.EMAIL_USER, pass: config.EMAIL_PASS },
       });
 
-      console.log('[data-deletion] Sending admin notification to:', config.EMAIL_TO);
+      // console.log('[data-deletion] Sending admin notification to:', config.EMAIL_TO);
       // Notify admin
       await transporter.sendMail({
         from: `"S3N Website" <${config.EMAIL_USER}>`,
@@ -70,7 +72,7 @@ router.post('/', contactLimiter, async (req, res) => {
         `,
       });
 
-      console.log('[data-deletion] Admin notification sent. Sending acknowledgement to:', email);
+      // console.log('[data-deletion] Admin notification sent. Sending acknowledgement to:', email);
       // Acknowledge user
       await transporter.sendMail({
         from: `"S3N Technologies" <${config.EMAIL_USER}>`,
@@ -86,16 +88,16 @@ router.post('/', contactLimiter, async (req, res) => {
           <p>— S3N Technologies Team</p>
         `,
       });
-      console.log('[data-deletion] Acknowledgement sent. All emails delivered successfully.');
+      // console.log('[data-deletion] Acknowledgement sent. All emails delivered successfully.');
     } else {
-      console.warn('[data-deletion] Email credentials missing — EMAIL_USER:', config.EMAIL_USER || '(empty)', '| EMAIL_PASS:', config.EMAIL_PASS ? '(set)' : '(empty)');
-      console.log('[data-deletion] Skipping email. Request data:', { email, app });
+      // console.warn('[data-deletion] Email credentials missing — EMAIL_USER:', config.EMAIL_USER || '(empty)', '| EMAIL_PASS:', config.EMAIL_PASS ? '(set)' : '(empty)');
+      // console.log('[data-deletion] Skipping email. Request data:', { email, app });
     }
 
     res.json({ success: true, message: 'Your deletion request has been submitted. You will receive a confirmation email within 30 days.' });
   } catch (error) {
-    console.error('[data-deletion] Email send failed:', error.message);
-    console.error('[data-deletion] Full error:', error);
+    // console.error('[data-deletion] Email send failed:', error.message);
+    // console.error('[data-deletion] Full error:', error);
     res.status(500).json({ success: false, message: 'Failed to submit request. Please try again.' });
   }
 });

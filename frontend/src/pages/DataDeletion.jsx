@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { submitDataDeletionRequest } from '../services/api'
 
 const APPS = [
   { value: '', label: 'Select an app' },
@@ -43,21 +44,13 @@ function DataDeletion() {
 
     setSubmitting(true)
     try {
-      console.log('[DataDeletion] Submitting to /api/data-deletion', { email: formData.email, app: formData.app })
-      const res = await fetch('/api/data-deletion', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      })
-      console.log('[DataDeletion] Response status:', res.status)
-      const data = await res.json()
-      console.log('[DataDeletion] Response body:', data)
+      const data = await submitDataDeletionRequest(formData)
       setFormMessage({
         type: data.success ? 'success' : 'error',
         text: data.message,
       })
     } catch (err) {
-      console.error('[DataDeletion] Fetch error:', err)
+      // console.error('[DataDeletion] Fetch error:', err)
       setFormMessage({ type: 'error', text: 'Failed to submit request. Please try again.' })
     } finally {
       setSubmitting(false)

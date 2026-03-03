@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { submitContactForm } from '../services/api'
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -39,21 +40,13 @@ function Contact() {
 
     setSubmitting(true)
     try {
-      console.log('[Contact] Submitting form to /api/contact', { name: formData.name, email: formData.email })
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      })
-      console.log('[Contact] Response status:', res.status)
-      const data = await res.json()
-      console.log('[Contact] Response body:', data)
+      const data = await submitContactForm(formData)
       setFormMessage({
         type: data.success ? 'success' : 'error',
         text: data.message,
       })
     } catch (err) {
-      console.error('[Contact] Fetch error:', err)
+      // console.error('[Contact] Fetch error:', err)
       setFormMessage({ type: 'error', text: 'Failed to send message. Please try again.' })
     } finally {
       setSubmitting(false)
@@ -126,22 +119,22 @@ function Contact() {
 
                 <div className="form-group">
                   <label htmlFor="name">Name *</label>
-                  <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required />
+                  <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required maxLength={100} />
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="email">Email Address *</label>
-                  <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
+                  <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required maxLength={254} />
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="company">Company Name</label>
-                  <input type="text" id="company" name="company" value={formData.company} onChange={handleChange} />
+                  <input type="text" id="company" name="company" value={formData.company} onChange={handleChange} maxLength={100} />
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="phone">Phone Number</label>
-                  <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} />
+                  <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} maxLength={30} />
                 </div>
 
                 <div className="form-group">
@@ -192,6 +185,7 @@ function Contact() {
                     value={formData.message}
                     onChange={handleChange}
                     required
+                    maxLength={2000}
                   ></textarea>
                 </div>
 
